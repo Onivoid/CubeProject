@@ -1,18 +1,18 @@
 var events = new Events();
-events.add = function(obj) {
-  obj.events = { };
+events.add = function (obj) {
+  obj.events = {};
 }
-events.implement = function(fn) {
+events.implement = function (fn) {
   fn.prototype = Object.create(Events.prototype);
 }
 
 function Events() {
-  this.events = { };
+  this.events = {};
 }
-Events.prototype.on = function(name, fn) {
+Events.prototype.on = function (name, fn) {
   var events = this.events[name];
   if (events == undefined) {
-    this.events[name] = [ fn ];
+    this.events[name] = [fn];
     this.emit('event:on', fn);
   } else {
     if (events.indexOf(fn) == -1) {
@@ -22,11 +22,11 @@ Events.prototype.on = function(name, fn) {
   }
   return this;
 }
-Events.prototype.once = function(name, fn) {
+Events.prototype.once = function (name, fn) {
   var events = this.events[name];
   fn.once = true;
   if (!events) {
-    this.events[name] = [ fn ];
+    this.events[name] = [fn];
     this.emit('event:once', fn);
   } else {
     if (events.indexOf(fn) == -1) {
@@ -36,11 +36,11 @@ Events.prototype.once = function(name, fn) {
   }
   return this;
 }
-Events.prototype.emit = function(name, args) {
+Events.prototype.emit = function (name, args) {
   var events = this.events[name];
   if (events) {
     var i = events.length;
-    while(i--) {
+    while (i--) {
       if (events[i]) {
         events[i].call(this, args);
         if (events[i].once) {
@@ -51,7 +51,7 @@ Events.prototype.emit = function(name, args) {
   }
   return this;
 }
-Events.prototype.unbind = function(name, fn) {
+Events.prototype.unbind = function (name, fn) {
   if (name) {
     var events = this.events[name];
     if (events) {
@@ -66,7 +66,7 @@ Events.prototype.unbind = function(name, fn) {
     }
   } else {
     delete this.events;
-    this.events = { };
+    this.events = {};
   }
   return this;
 }
@@ -77,7 +77,7 @@ var prefix = (function () {
   var styles = window.getComputedStyle(document.documentElement, ''),
     pre = (Array.prototype.slice
       .call(styles)
-      .join('') 
+      .join('')
       .match(/-(moz|webkit|ms)-/) || (styles.OLink === '' && ['', 'o'])
     )[1],
     dom = ('WebKit|Moz|MS|O').match(new RegExp('(' + pre + ')', 'i'))[1];
@@ -90,7 +90,7 @@ var prefix = (function () {
 })();
 
 function bindEvent(element, type, handler) {
-  if(element.addEventListener) {
+  if (element.addEventListener) {
     element.addEventListener(type, handler, false);
   } else {
     element.attachEvent('on' + type, handler);
@@ -130,39 +130,39 @@ function Viewport(data) {
   this.calculatedSide = 0;
 
 
-  bindEvent(document, 'mousedown', function() {
+  bindEvent(document, 'mousedown', function () {
     self.down = true;
   });
 
-  bindEvent(document, 'mouseup', function() {
-    self.down = false;
-  });
-  
-  bindEvent(document, 'keyup', function() {
+  bindEvent(document, 'mouseup', function () {
     self.down = false;
   });
 
-  bindEvent(document, 'mousemove', function(e) {
+  bindEvent(document, 'keyup', function () {
+    self.down = false;
+  });
+
+  bindEvent(document, 'mousemove', function (e) {
     self.mouseX = e.pageX;
     self.mouseY = e.pageY;
   });
 
-  bindEvent(document, 'touchstart', function(e) {
+  bindEvent(document, 'touchstart', function (e) {
 
     self.down = true;
     e.touches ? e = e.touches[0] : null;
     self.mouseX = e.pageX / self.touchSensivity;
     self.mouseY = e.pageY / self.touchSensivity;
-    self.lastX  = self.mouseX;
-    self.lastY  = self.mouseY;
+    self.lastX = self.mouseX;
+    self.lastY = self.mouseY;
   });
 
-  bindEvent(document, 'touchmove', function(e) {
-    if(e.preventDefault) { 
+  bindEvent(document, 'touchmove', function (e) {
+    if (e.preventDefault) {
       e.preventDefault();
     }
 
-    if(e.touches.length == 1) {
+    if (e.touches.length == 1) {
 
       e.touches ? e = e.touches[0] : null;
 
@@ -172,15 +172,15 @@ function Viewport(data) {
     }
   });
 
-  bindEvent(document, 'touchend', function(e) {
+  bindEvent(document, 'touchend', function (e) {
     self.down = false;
-  });  
+  });
 
   setInterval(this.animate.bind(this), this.fps);
 
 }
 events.implement(Viewport);
-Viewport.prototype.animate = function() {
+Viewport.prototype.animate = function () {
 
   this.distanceX = (this.mouseX - this.lastX);
   this.distanceY = (this.mouseY - this.lastY);
@@ -188,82 +188,86 @@ Viewport.prototype.animate = function() {
   this.lastX = this.mouseX;
   this.lastY = this.mouseY;
 
-  if(this.down) {
+  if (this.down) {
     this.torqueX = this.torqueX * this.sensivityFade + (this.distanceX * this.speed - this.torqueX) * this.sensivity;
     this.torqueY = this.torqueY * this.sensivityFade + (this.distanceY * this.speed - this.torqueY) * this.sensivity;
   }
 
-  if(Math.abs(this.torqueX) > 1.0 || Math.abs(this.torqueY) > 1.0) {
-    if(!this.down) {
+  if (Math.abs(this.torqueX) > 1.0 || Math.abs(this.torqueY) > 1.0) {
+    if (!this.down) {
       this.torqueX *= this.sensivityFade;
       this.torqueY *= this.sensivityFade;
     }
 
     this.positionY -= this.torqueY;
 
-    if(this.positionY > 360) {
+    if (this.positionY > 360) {
       this.positionY -= 360;
-    } else if(this.positionY < 0) {
+    } else if (this.positionY < 0) {
       this.positionY += 360;
     }
 
-    if(this.positionY > 90 && this.positionY < 270) {
+    if (this.positionY > 90 && this.positionY < 270) {
       this.positionX -= this.torqueX;
 
-      if(!this.upsideDown) {
+      if (!this.upsideDown) {
         this.upsideDown = true;
-        this.emit('upsideDown', { upsideDown: this.upsideDown });
+        this.emit('upsideDown', {
+          upsideDown: this.upsideDown
+        });
       }
 
     } else {
 
       this.positionX += this.torqueX;
 
-      if(this.upsideDown) {
+      if (this.upsideDown) {
         this.upsideDown = false;
-        this.emit('upsideDown', { upsideDown: this.upsideDown });
+        this.emit('upsideDown', {
+          upsideDown: this.upsideDown
+        });
       }
     }
 
-    if(this.positionX > 360) {
+    if (this.positionX > 360) {
       this.positionX -= 360;
-    } else if(this.positionX < 0) {
+    } else if (this.positionX < 0) {
       this.positionX += 360;
     }
 
-    if(!(this.positionY >= 46 && this.positionY <= 130) && !(this.positionY >= 220 && this.positionY <= 308)) {
-      if(this.upsideDown) {
-        if(this.positionX >= 42 && this.positionX <= 130) {
+    if (!(this.positionY >= 46 && this.positionY <= 130) && !(this.positionY >= 220 && this.positionY <= 308)) {
+      if (this.upsideDown) {
+        if (this.positionX >= 42 && this.positionX <= 130) {
           this.calculatedSide = 3;
-        } else if(this.positionX >= 131 && this.positionX <= 223) {
+        } else if (this.positionX >= 131 && this.positionX <= 223) {
           this.calculatedSide = 2;
-        } else if(this.positionX >= 224 && this.positionX <= 314) {
+        } else if (this.positionX >= 224 && this.positionX <= 314) {
           this.calculatedSide = 5;
         } else {
           this.calculatedSide = 4;
         }
       } else {
-        if(this.positionX >= 42 && this.positionX <= 130) {
+        if (this.positionX >= 42 && this.positionX <= 130) {
           this.calculatedSide = 5;
-        } else if(this.positionX >= 131 && this.positionX <= 223) {
+        } else if (this.positionX >= 131 && this.positionX <= 223) {
           this.calculatedSide = 4;
-        } else if(this.positionX >= 224 && this.positionX <= 314) {
+        } else if (this.positionX >= 224 && this.positionX <= 314) {
           this.calculatedSide = 3;
         } else {
           this.calculatedSide = 2;
         }
       }
     } else {
-      if(this.positionY >= 46 && this.positionY <= 130) {
+      if (this.positionY >= 46 && this.positionY <= 130) {
         this.calculatedSide = 6;
       }
 
-      if(this.positionY >= 220 && this.positionY <= 308) {
+      if (this.positionY >= 220 && this.positionY <= 308) {
         this.calculatedSide = 1;
       }
     }
 
-    if(this.calculatedSide !== this.currentSide) {
+    if (this.calculatedSide !== this.currentSide) {
       this.currentSide = this.calculatedSide;
       this.emit('sideChange');
     }
@@ -272,7 +276,7 @@ Viewport.prototype.animate = function() {
 
   this.element.style[userPrefix.js + 'Transform'] = 'rotateX(' + this.positionY + 'deg) rotateY(' + this.positionX + 'deg)';
 
-  if(this.positionY != this.previousPositionY || this.positionX != this.previousPositionX) {
+  if (this.positionY != this.previousPositionY || this.positionX != this.previousPositionX) {
     this.previousPositionY = this.positionY;
     this.previousPositionX = this.positionX;
 
@@ -297,19 +301,19 @@ function Cube(data) {
   this.sides = this.element.getElementsByClassName('side');
 
   this.viewport = data.viewport;
-  this.viewport.on('rotate', function() {
+  this.viewport.on('rotate', function () {
     self.rotateSides();
   });
-  this.viewport.on('upsideDown', function(obj) {
+  this.viewport.on('upsideDown', function (obj) {
     self.upsideDown(obj);
   });
-  this.viewport.on('sideChange', function() {
+  this.viewport.on('sideChange', function () {
     self.sideChange();
   });
 }
-Cube.prototype.rotateSides = function() {
+Cube.prototype.rotateSides = function () {
   var viewport = this.viewport;
-  if(viewport.positionY > 90 && viewport.positionY < 270) {
+  if (viewport.positionY > 90 && viewport.positionY < 270) {
     this.sides[0].getElementsByClassName('cube-image')[0].style[userPrefix.js + 'Transform'] = 'rotate(' + (viewport.positionX + viewport.torqueX) + 'deg)';
     this.sides[5].getElementsByClassName('cube-image')[0].style[userPrefix.js + 'Transform'] = 'rotate(' + -(viewport.positionX + 180 + viewport.torqueX) + 'deg)';
   } else {
@@ -317,23 +321,23 @@ Cube.prototype.rotateSides = function() {
     this.sides[5].getElementsByClassName('cube-image')[0].style[userPrefix.js + 'Transform'] = 'rotate(' + -(viewport.positionX + 180 - viewport.torqueX) + 'deg)';
   }
 }
-Cube.prototype.upsideDown = function(obj) {
+Cube.prototype.upsideDown = function (obj) {
 
   var deg = (obj.upsideDown == true) ? '180deg' : '0deg';
   var i = 5;
 
-  while(i > 0 && --i) {
+  while (i > 0 && --i) {
     this.sides[i].getElementsByClassName('cube-image')[0].style[userPrefix.js + 'Transform'] = 'rotate(' + deg + ')';
   }
 
 }
-Cube.prototype.sideChange = function() {
+Cube.prototype.sideChange = function () {
 
-  for(var i = 0; i < this.sides.length; ++i) {
-    this.sides[i].getElementsByClassName('cube-image')[0].className = 'cube-image';    
+  for (var i = 0; i < this.sides.length; ++i) {
+    this.sides[i].className = 'side';
   }
 
-  this.sides[this.viewport.currentSide - 1].getElementsByClassName('cube-image')[0].className = 'cube-image active';
+  this.sides[this.viewport.currentSide - 1].className = 'side active';
 
 }
 
