@@ -60,7 +60,7 @@ gulp.task('build-features', () => {
     /* Compilation des components */
 
 gulp.task('build-components', () => {
-    return gulp.src(['src/js/components/**/*.js'])
+    return gulp.src(['src/js/components/**/**/*.js'])
         .pipe(concat('app.js'))
         .pipe(gulp.dest('dist/js'))
         .pipe(browserSync.reload({
@@ -71,6 +71,24 @@ gulp.task('build-components', () => {
             {
                 title: "Compilation Components",
                 message: "Les Components ont été compilés"
+            }
+        ))
+});
+
+    /* Compilation des vues */
+
+gulp.task('build-vues', () => {
+    return gulp.src(['src/js/vues/*.js'])
+        .pipe(concat('vues.js'))
+        .pipe(gulp.dest('dist/js'))
+        .pipe(browserSync.reload({
+            stream: true
+        }))
+        /* notification */
+        .pipe(notify(
+            {
+                title: "Compilation vues",
+                message: "Les vues ont été compilés"
             }
         ))
 
@@ -86,11 +104,12 @@ gulp.task('browserSync', function(){
 
     /* Live production */
 
-gulp.task('live-build',['browserSync','build-sass','build-features','build-components'], () => {
+gulp.task('live-build',['browserSync','build-sass','build-features','build-components','build-vues'], () => {
     /* Compilation des fichiers de prods à la sauvegarde */
     gulp.watch('src/sass/*', ['build-sass']);
-    gulp.watch('src/js/components/**/*', ['build-components']);
+    gulp.watch('src/js/components/**/**/*', ['build-components']);
     gulp.watch('src/js/features/*', ['build-features']);
+    gulp.watch('src/js/vues/*',(['build-vues']));
     /* relancement du live-viewer */
     gulp.watch('dist/**/*', browserSync.reload);
     gulp.watch('index.html', browserSync.reload);
