@@ -1,4 +1,4 @@
-Vue.component('CubeContainer', {
+Vue.component('cubecontainer', {
     template: `
     <div class="cubeContainer">
         <div id="wrapper">
