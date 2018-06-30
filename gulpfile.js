@@ -106,7 +106,7 @@ gulp.task('browserSync', function(){
 
 gulp.task('live-build',['browserSync','build-sass','build-features','build-components','build-vues'], () => {
     /* Compilation des fichiers de prods à la sauvegarde */
-    gulp.watch('src/sass/*', ['build-sass']);
+    gulp.watch('src/sass/**/*', ['build-sass']);
     gulp.watch('src/js/components/**/**/*', ['build-components']);
     gulp.watch('src/js/features/*', ['build-features']);
     gulp.watch('src/js/vues/*',(['build-vues']));

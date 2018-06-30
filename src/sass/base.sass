@@ -7,6 +7,13 @@
   flex-direction: columns
   justify-content: center
   align-items: center
+  h2
+    font-family: 'Encode Sans Condensed', sans-serif
+    font-weight: 300
+    font-size: 1.8em
+    position: absolute
+    top: 2%
+    left: 1
   #wrapper
     transform: scale(1)
   .cube
@@ -25,6 +32,8 @@
       touch-callout: none
       user-select: none
       > div.cube-image
+        font-family: 'Encode Sans Condensed', sans-serif
+        font-weight: 300
         width: 200px
         height: 200px
         display: flex
@@ -35,14 +44,11 @@
         line-height: 200px
         font-size: 25px
         text-align: center
-        img
-          height: 90%
-          width: 90%
         &.active
       &:hover
         cursor: pointer
       &:first-child
-        background: linear-gradient(to right, #11998e, #38ef7d)
+        background: linear-gradient(to right, #141e30, #243b55)
         transform: rotateX(90deg) translateZ(100px)
         outline: 1px solid transparent
         transition: background 0.6s
@@ -50,11 +56,12 @@
           opacity: 0
           transition: opacity 0.4s
         &.active
-          background: rgba(255,255,255,0.5)
+          background: rgba(150,150,150,0.5)
           .text
             opacity: 1
+            color: #f5f5f5
       &:nth-child(2)
-        background: linear-gradient(to right, #11998e, #38ef7d)
+        background: linear-gradient(to right, #141e30, #243b55)
         transform: translateZ(100px)
         outline: 1px solid transparent
         transition: background 0.6s
@@ -62,11 +69,12 @@
           opacity: 0
           transition: opacity 0.4s
         &.active
-          background: rgba(255,255,255,0.5)
+          background: rgba(150,150,150,0.5)
           .text
             opacity: 1
+            color: #f5f5f5
       &:nth-child(3)
-        background: linear-gradient(to right, #11998e, #38ef7d)
+        background: linear-gradient(to right, #141e30, #243b55)
         transform: rotateY(90deg) translateZ(100px)
         outline: 1px solid transparent
         transition: background 0.6s
@@ -74,11 +82,12 @@
           opacity: 0
           transition: opacity 0.4s
         &.active
-          background: rgba(255,255,255,0.5)
+          background: rgba(150,150,150,0.5)
           .text
             opacity: 1
+            color: #f5f5f5
       &:nth-child(4)
-        background: linear-gradient(to right, #11998e, #38ef7d)
+        background: linear-gradient(to right, #141e30, #243b55)
         transform: rotateY(180deg) translateZ(100px)
         outline: 1px solid transparent
         transition: background 0.6s
@@ -86,11 +95,12 @@
           opacity: 0
           transition: opacity 0.4s
         &.active
-          background: rgba(255,255,255,0.5)
+          background: rgba(150,150,150,0.5)
           .text
             opacity: 1
+            color: #f5f5f5
       &:nth-child(5)
-        background: linear-gradient(to right, #11998e, #38ef7d)
+        background: linear-gradient(to right, #141e30, #243b55)
         transform: rotateY(-90deg) translateZ(100px)
         outline: 1px solid transparent
         transition: background 0.6s
@@ -98,11 +108,12 @@
           opacity: 0
           transition: opacity 0.4s
         &.active
-          background: rgba(255,255,255,0.5)
+          background: rgba(150,150,150,0.5)
           .text
             opacity: 1
+            color: #f5f5f5
       &:nth-child(6)
-        background: linear-gradient(to right, #11998e, #38ef7d)
+        background: linear-gradient(to right, #141e30, #243b55)
         transform: rotateX(-90deg) rotate(180deg) translateZ(100px)
         outline: 1px solid transparent
         transition: background 0.6s
@@ -110,9 +121,10 @@
           opacity: 0
           transition: opacity 0.4s
         &.active
-          background: rgba(255,255,255,0.5)
+          background: rgba(150,150,150,0.5)
           .text
             opacity: 1
+            color: #f5f5f5
 
   @media (max-width: 640px)
     .viewport
